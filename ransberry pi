@@ -40,7 +40,7 @@ def read_data():
  
 def save(t,y1,y2,y3):
     a = open('data.txt','a')
-    a.write(f'{t} {y1} {y2} {y3}')
+    a.write(f'{t}#{y1}#{y2}#{y3}')
     a.close()
     
 def ser_type(x=0):
