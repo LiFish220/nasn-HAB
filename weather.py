@@ -6,7 +6,7 @@ Created on Sat Oct  2 15:43:20 2021
 """
 import requests
 from bs4 import BeautifulSoup
-def get_T():
+def get_T(): #爬蟲獲得天氣資料
     url = "https://weather.yam.com/%E6%96%B0%E8%8E%8A%E5%8D%80/%E6%96%B0%E5%8C%97%E5%B8%82"
     html = requests.get(url)
     html.encoding = "utf-8"
@@ -19,7 +19,7 @@ def get_T():
     x = a(item2)
     return item ,x,item3
 
-def a(x):
+def a(x): #判斷風向
     s = "" ;a = 0
     for i in x:
         if i == "東":
@@ -35,7 +35,7 @@ def a(x):
     return s
 
 
-def recommended(x):
+def recommended(x): #推薦放飛程度
     x = int(x)
     if x < 5:
         return "High",53,245,107
