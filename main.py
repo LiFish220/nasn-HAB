@@ -4,7 +4,7 @@ Created on Sat Oct  2 20:09:19 2021
 
 @author: LiFish
 """
-import pygame as pg
+import pygame as pg #模組匯入
 import weather
 import count
 import find
@@ -14,27 +14,27 @@ import sys
 pg.init()
 sys.setrecursionlimit(999999) 
 running = True ; go = 0
-main_clock = pg.time.Clock()
+main_clock = pg.time.Clock() #  fps設定
 
-L = 0.0065 #Lapse rate of temperature  0.0065 K/m
-M_air = 0.02897 #Molarcualr mass of air  0.02897 kg/mol
-Rv = 0.0821 #
-air_n = 29 #
+L = 0.0065 #公式推導所需定植
+M_air = 0.02897 
+Rv = 0.0821 
+air_n = 29 
 P = 101300
 pi = 3.14159265358979
 Cd0 = 0.47
 m_a = 5.131
 R = 1
-H = 0
+H = 0 #初始高度
 ts = 0
 sum_a = 0
 x_b = 1
-l_n = ""
-g_mode = 0.004
+l_n = "" #落點地名
+g_mode = 0.004 #氣體分子量
 screen = pg.display.set_mode((800,600)) #視窗大小
 pg.display.set_caption('HAB final location predict')
 
-back = pg.image.load("back.png")
+back = pg.image.load("back.png") #圖片載入
 white = pg.image.load("white.png")
 hab = pg.image.load("hab.png")
 b1 = pg.image.load("bt1.png")
@@ -43,7 +43,7 @@ go_t = pg.image.load("go.png")
 bar = pg.image.load("bar.png")
 s60 = pg.image.load("60s.png")
 
-text = pg.font.SysFont('simhei', 32)
+text = pg.font.SysFont('simhei', 32) #字體設定
 text2 = pg.font.SysFont('simhei', 90)
 text3 = pg.font.SysFont('simhei', 24)
 text4 = pg.font.SysFont('simhei', 56)
@@ -52,14 +52,13 @@ screen.blit(white,(0,0))
 screen.blit(back,(0,0))
 pg.display.update()
 
-Temp,wind_d,wind_v = weather.get_T()
+Temp,wind_d,wind_v = weather.get_T() #weather函式獲得天氣資訊
 print(50)
-re,c1,c2,c3 = weather.recommended(wind_v)
+re,c1,c2,c3 = weather.recommended(wind_v) # weather函式獲得推薦釋放程度
 print(100)
 
-T = count.temp(int(Temp))
-H = 0
-P1 = round(count.ground_pressure(P, L, H, T, M_air),1)
+T = count.temp(int(Temp)) #溫度轉換度C to K
+P1 = round(count.ground_pressure(P, L, H, T, M_air),1) #count函數計算資訊
 r1 = count.r(L,H,T,M_air)
 V_z = count.V_z(r1)
 m_g = round(count.m_g(P,V_z,T,g_mode),3)
@@ -73,8 +72,7 @@ t1 = int(count.need_time(M_air, L, T, Cd0, R, m_t, m_a, 10000))
 t2 = int(count.need_time(M_air, L, T, Cd0, R, m_t, m_a, 20000))
 t3 = int(count.need_time(M_air, L, T, Cd0, R, m_t, m_a, 30000))
 
-
-text_box1 = text.render('Surface temperature:', True, (195, 195, 195),None)
+text_box1 = text.render('Surface temperature:', True, (195, 195, 195),None) #文字方塊設定
 text_box2 = text.render('Wind direction:', True, (195, 195, 195),None)
 text_box3 = text.render('Wind speed:', True, (195, 195, 195),None)
 text_box4 = text.render('Recommended level', True, (195, 195, 195),None)
@@ -112,10 +110,10 @@ while running:
             running = False
     for i in range(255,-1,-1):
         screen.blit(white,(0,0))
-        back.set_alpha(i); screen.blit(back,(0,0)) ; pg.display.update() 
+        back.set_alpha(i); screen.blit(back,(0,0)) ; pg.display.update() #加載畫面
     break
 
-hab.set_alpha(0);screen.blit(white,(0,0));screen.blit(hab,(400,15));time.sleep(0.1);pg.display.update()
+hab.set_alpha(0);screen.blit(white,(0,0));screen.blit(hab,(400,15));time.sleep(0.1);pg.display.update() #出場動畫
 hab.set_alpha(40);screen.blit(white,(0,0));screen.blit(hab,(400,15));time.sleep(0.1);pg.display.update()
 hab.set_alpha(80);screen.blit(white,(0,0));screen.blit(hab,(400,15));time.sleep(0.1);pg.display.update()
 hab.set_alpha(120);screen.blit(white,(0,0));screen.blit(hab,(400,15));time.sleep(0.1);pg.display.update()
@@ -125,7 +123,7 @@ hab.set_alpha(240);screen.blit(white,(0,0));screen.blit(hab,(400,15));time.sleep
 b_t1 = 0 ; b_t2 = 0 ;b_t3 = 0
 
 while running:
-    T = count.temp(int(Temp))
+    T = count.temp(int(Temp)) #所需數值計算
     H = 0
     P1 = round(count.ground_pressure(P, L, H, T, M_air),1)
     r1 = count.r(L,H,T,M_air)
@@ -137,8 +135,8 @@ while running:
     for event in pg.event.get():
         if event.type == pg.QUIT:
             running = False
-    time_text = text.render(f'{g_time}', True, (195, 195, 195),None)
-    screen.blit(white,(0,0)) ; screen.blit(time_text, (12,0)) ; screen.blit(hab,(400,20))
+    time_text = text.render(f'{g_time}', True, (195, 195, 195),None) #現在時間接收
+    screen.blit(white,(0,0)) ; screen.blit(time_text, (12,0)) ; screen.blit(hab,(400,20)) #圖片匯出
     screen.blit(text_box1,(130,120)) ; screen.blit(text_box2,(130,220)) ; screen.blit(text_box3,(130,320)) ; screen.blit(text_box4,(130,420)) ; screen.blit(text_box5,(600,570))
     screen.blit(text_Temp,(130,150)) ; screen.blit(text_Wind_d,(130,250)) ; screen.blit(text_Wind_v,(130,350)) ; screen.blit(text_Level,(130,450))
     
@@ -146,17 +144,17 @@ while running:
     text_box24 = text.render(f'load: {m_l}', True, (195, 195, 195),None)
     text_box25 = text.render(f'gas: {m_g}', True, (195, 195, 195),None)
     
-    user = pg.mouse.get_pos()
+    user = pg.mouse.get_pos() #滑鼠偵測
     x = user[0] ;y = user[1]
     mouse = pg.mouse.get_pressed()
     screen.blit(b1,(400,510))
-    if 400 < x < 500 and 510 < y < 560:
+    if 400 < x < 500 and 510 < y < 560: #釋放按鈕
         screen.blit(b2,(400,510))
         if mouse[0]:
           go = 1 ; break
     else:
         screen.blit(b1,(400,510))
-    if 495 < x < 634 and 50 < y < 195:
+    if 495 < x < 634 and 50 < y < 195: #氣體分子量選擇
         screen.blit(text_box21,(670,100))
         screen.blit(text_box22,(670,150))
         if mouse[0]:
@@ -166,7 +164,7 @@ while running:
             pg.draw.circle(screen,(195,195,195),(650,160),5)
             g_mode = 0.004; b_t1 = 0 ; b_t2 = 1
             
-    if 438 < y < 560 and 536 < x < 590:
+    if 438 < y < 560 and 536 < x < 590: #夾艙重量調整
         pg.draw.rect(screen, (195,195,195), [640, 439, 6, 120], 0)
         if mouse[0]:
             pg.draw.circle(screen,(88,88,88),(643,y),7)
@@ -196,14 +194,14 @@ if go:
     running = True
     sum_a += int(t1/91)
     screen.blit(white,(0,0))
-    try:
+    try: #照片尋找
         loc_p = pg.image.load(find.get(sum_x,wind_d)+".png")
     except FileNotFoundError:
         loc_p = pg.image.load('sea.png')
     text_box26 = text.render(find.location_name(find.get(sum_x,wind_d)), True, (195, 195, 195),None)
     while running:
         main_clock.tick(1)
-        g_time = count.get_time() 
+        g_time = count.get_time() #各參數計算
         T = count.temp(int(Temp))
         H = round(ts*v1,1)
         r1 = count.r(L,H,T,M_air)
@@ -217,7 +215,7 @@ if go:
             if event.type == pg.QUIT:
                 running = False
                 
-        time_text = text.render(f'{g_time}', True, (195, 195, 195),None)
+        time_text = text.render(f'{g_time}', True, (195, 195, 195),None) 
         list_text = text.render(f'Temp: {Temp}°C    Wind_d: {wind_d}    Wind_v: {wind_v}m/s', True, (195, 195, 195),None)
         text_A_p = text2.render(f'{A_p}',True, (195, 195, 195),None)
         text_D = text2.render(f'{D}',True, (195, 195, 195),None)
@@ -228,15 +226,15 @@ if go:
         text_K = text2.render(f'{round(T-L*H,2)}K',True, (195, 195, 195),None)
         text_S = text2.render(f'{sum_x}km',True, (195, 195, 195),None)
 
-        screen.blit(white,(0,0)) ; screen.blit(time_text, (12,0)) ; screen.blit(list_text,(235,0))
+        screen.blit(white,(0,0)) ; screen.blit(time_text, (12,0)) ; screen.blit(list_text,(235,0)) #文字、圖片顯示
         screen.blit(text_box6,(10,50)) ; screen.blit(text_box7,(10,150)) ; screen.blit(text_box8,(10,250)) ; screen.blit(text_box9,(10,350)) ; screen.blit(text_box5,(600,570))
         screen.blit(text_box10,(10,450)) ; screen.blit(text_box17,(300,50)) ; screen.blit(text_box18,(300,150)) ; screen.blit(text_box19,(520,50)) ;# screen.blit(text_box20,(300,250)) 
         screen.blit(text_box26,(300,430))
         
-        screen.blit(text_K,(10,80)) ; screen.blit(text_P1,(10,180)) ; screen.blit(text_H,(10,280)) ; screen.blit(text_T,(10,380))
+        screen.blit(text_K,(10,80)) ; screen.blit(text_P1,(10,180)) ; screen.blit(text_H,(10,280)) ; screen.blit(text_T,(10,380)) #參數顯示
         screen.blit(bar,(10,510))  ; screen.blit(text_v1,(300,80)) ; screen.blit(loc_p,(300,180)) ; screen.blit(text_S,(520,80)) 
         
-        if ts < t1:
+        if ts < t1: #進度調繪製
             if ts >sum_a:
                 x_b += 2
                 sum_a +=int(t1/91)
