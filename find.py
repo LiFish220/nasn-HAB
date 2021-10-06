@@ -4,7 +4,7 @@ Created on Sun Oct  3 16:53:04 2021
 
 @author: LiFish
 """
-def get(x,d):
+def get(x,d): #距離估算
     s = ""
     if 37 <= x <43:
         s += '40'
@@ -28,7 +28,7 @@ def get(x,d):
     return s
 #print(get(43.586,"EN"))
 
-def location_name(x):
+def location_name(x): #落地地名
     if x == "40e":
         return "Shuangxi District,New Taipei City"
     elif x == "40es":
